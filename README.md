@@ -1,34 +1,30 @@
-# ToDoList (Text-Based)
-This is a simple Python console application for managing a personal to-do list. Users can add new tasks, view all current tasks, and remove tasks once completed. The app runs in a loop, allowing users to keep updating their list until they choose to exit. It’s a great beginner project to practice working with lists, loops, conditionals, and user input in Python.
+Simple Python To-Do List App
 
-__**Features:**__
+This is a beginner-level Python console app to manage your personal to-do list.
 
--Add new tasks to your list
+✨ Features so far:
 
--View all current tasks, neatly numbered
+✅ Add tasks with:
 
--Remove tasks by selecting their number
+Description
 
--Runs entirely in the terminal with no external libraries required
+Optional due date (e.g. 2025-07-20)
 
-__**Possible Enhancements:**__
+Priority level (High, Mid, Low)
 
--Save and load tasks from a file
+✅ View tasks in a list:
 
--Add task priorities or due dates
+Shows whether tasks are completed
 
--Mark tasks as completed instead of removing them
+Displays due dates (if any)
 
--Create a graphical user interface (GUI)
+Displays priority
 
--Would you like it shorter, more detailed, or formatted differently?
+✅ Mark tasks as complete instead of deleting them
 
+✅ Remove tasks from the list
 
+✅ Sort tasks by due date (earliest first)
 
+✅ Save and load tasks automatically from a JSON file
 
-
-
-
-
-
-Ask ChatGPT
