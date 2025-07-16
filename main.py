@@ -27,7 +27,15 @@ def addTask():
         except ValueError:
             print("Invalid date, saving due date as none")
             due_date=None
-    task = {"description" : tname , "completed" : False, "due" : due_date}
+    while True:
+        pr= ["high", "mid", "low"]
+        priority = input("Choose (High|Mid|Low): ") .strip().lower()
+        if priority in pr:
+            break
+        else:
+            print("Enter valid priority")
+
+    task = {"description" : tname , "completed" : False, "due" : due_date, "priority" : priority.capitalize()}
     todo_list.append(task)
     print()
     print("Task added successfully")
@@ -89,8 +97,8 @@ def view_list():
 
         for task in sorted_tasks:
             status = "[x]" if task["completed"]==True else "[ ]"
-            due_date = f"(Due: {task["due"]})" if {task["due"]} != None else ""
-            print (f'{status} {i}. || {task["description"]} || {due_date}')
+            due_date = f"(Due: {task["due"]})" if task["due"] != None else ""
+            print (f'{status} {i}. || {task["description"]} || {due_date} || {task["priority"]}')
             i+=1
         print("-----End of List-----")
 
