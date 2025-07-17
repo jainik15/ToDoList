@@ -83,24 +83,33 @@ def view_list():
     if len(todo_list)==0:
         print("List is empty")
     else:
-        i=1
         print("-----To Do List-----")
-        def sort_key(task):
+        priority_levels = ["High", "Mid", "Low"]
+        task_counter=1
+        def sort_date(task):
             if task["due"] is None:
                 return datetime.max
             try: 
                 return datetime.strptime(task["due"], "%Y-%m-%d")
             except ValueError:
                 return datetime.max
-            
-        sorted_tasks= sorted(todo_list,key=sort_key)
-
-        for task in sorted_tasks:
-            status = "[x]" if task["completed"]==True else "[ ]"
-            due_date = f"(Due: {task["due"]})" if task["due"] != None else ""
-            print (f'{status} {i}. || {task["description"]} || {due_date} || {task["priority"]}')
-            i+=1
-        print("-----End of List-----")
+        for priority in priority_levels:
+            group=[]
+            for task in todo_list:
+                if priority==task["priority"]:
+                    group.append(task)
+            if len(group)>0:
+                print(f"\n --- {priority.capitalize()} Level---")
+                group.sort(key=sort_date)
+                for task in group:
+                    status = "[x]" if task["completed"]==True else "[ ]"
+                    due_date = f'(Due: {task["due"]})' if task["due"] != None else ""
+                    print (f'{status} || {task_counter} || {task["description"]} || {due_date} || {task["priority"]}')
+                    task_counter+=1
+            else:
+                print(f"\n --- {priority.capitalize()} Level---")
+                print("\n No tasks\n")
+        print("\n-----End of List-----")
 
 def main():
     while True:
