@@ -1,0 +1,26 @@
+[
+    {
+        "description": "Hello up",
+        "completed": false,
+        "due": "2021-10-22",
+        "priority": "High"
+    },
+    {
+        "description": "get up",
+        "completed": false,
+        "due": null,
+        "priority": "High"
+    },
+    {
+        "description": "New dess",
+        "completed": false,
+        "due": null,
+        "priority": "Low"
+    },
+    {
+        "description": "New task",
+        "completed": false,
+        "due": "2025-10-15",
+        "priority": "Mid"
+    }
+]

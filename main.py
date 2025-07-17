@@ -5,7 +5,7 @@ todo_list = []
 
 def saveTasks():
     with open("tasks.json", "w") as file:
-        json.dump(todo_list, file)
+        json.dump(todo_list, file , indent=4)
 
 def loadTasks():
     global todo_list
@@ -35,25 +35,28 @@ def addTask():
         else:
             print("Enter valid priority")
 
-    task = {"description" : tname , "completed" : False, "due" : due_date, "priority" : priority.capitalize()}
+    task = {"description" : tname.capitalize() , 
+            "completed" : False, 
+            "due" : due_date, 
+            "priority" : priority.capitalize()
+            }
     todo_list.append(task)
-    print()
-    print("Task added successfully")
     saveTasks()
+    print("\n Task added successfully")
+    
 
 def removeTask():
     if len(todo_list)==0:
         print("List is empty")
+        return
     else:
         view_list()
         try:
-            print()
-            task_num = int(input("Enter task number to remove: "))
+            task_num = int(input("\n Enter task number to remove: "))
             idx= task_num-1
             if 0<=idx<len(todo_list):
                 removed_task = todo_list.pop(idx)
-                print()
-                print("'",removed_task["description"],"'", " task removed successfully")
+                print("\n '",removed_task["description"],"'", " task removed successfully")
                 saveTasks()
             else:
                 print("Invalid task number")
@@ -63,6 +66,7 @@ def removeTask():
 def markTasks():
     if(len(todo_list) ==0 ):
         print("List is empty")
+        return
     else:
         view_list()
         try:
@@ -72,22 +76,60 @@ def markTasks():
             if 0<=idx<len(todo_list):
                 todo_list[idx]["completed"]=True
                 saveTasks()
-                print("'",todo_list[idx]["description"],"'", "marked completed successfully")
+                print(" \n'",todo_list[idx]["description"],"'", "marked completed successfully")
             else:
                 print("Invalid task number")
         except ValueError:
             print("Invalid arguments")
 
-
+def editTasks():
+    if len(todo_list)==0:
+        print("\n List is empty")
+        return
+    else:
+        view_list()
+        try:
+            editTaskNum= int(input("Enter task number to edit"))
+            idx = editTaskNum-1
+            if 0<=idx< len(todo_list):
+                nDes = input("Enter new description: ").strip()
+                if nDes != "":
+                    todo_list[idx]["description"]=nDes.capitalize()
+                
+                nDue = input("Enter new due date: ").strip()
+                if nDue == "":
+                    pass
+                else:
+                    try:
+                        datetime.strptime(nDue, "%Y-%m-%d")
+                        todo_list[idx]["due"]=nDue
+                    except ValueError:
+                        print("Invalid date! (setting due date as none)")
+                        todo_list[idx]["due"]=None
+                
+                pr =["high","mid","low"]
+                npr = input("Enter new priority (high|mid|low): ").strip().lower()
+                if npr in pr:
+                    todo_list[idx]["priority"]=npr.capitalize()
+                else:
+                    print("Invalid priority, Not changed!")
+                saveTasks()
+                print("Task updated successfully")
+            else:
+                print("\n Invalid task number")
+        except ValueError:
+                print("Invalid arguments")
+    
 def view_list():
     if len(todo_list)==0:
-        print("List is empty")
+        print("\n List is empty")
+        return
     else:
         print("-----To Do List-----")
         priority_levels = ["High", "Mid", "Low"]
         task_counter=1
         def sort_date(task):
-            if task["due"] is None:
+            if task["due"] == None:
                 return datetime.max
             try: 
                 return datetime.strptime(task["due"], "%Y-%m-%d")
@@ -108,7 +150,7 @@ def view_list():
                     task_counter+=1
             else:
                 print(f"\n --- {priority.capitalize()} Level---")
-                print("\n No tasks\n")
+                print("\n No tasks")
         print("\n-----End of List-----")
 
 def main():
@@ -118,8 +160,9 @@ def main():
         print("1. Add Task")
         print("2. Remove Task")
         print("3. Mark Task")
-        print("4. View Task")
-        print("5. Exit ")
+        print("4. Edit Task")
+        print("5. View Task")
+        print("6. Exit ")
         print()
         try:
             choice = int(input("Enter your choice: ")) 
@@ -131,8 +174,10 @@ def main():
             elif choice==3:
                 markTasks()
             elif choice==4:
-                view_list()
+                editTasks()
             elif choice==5:
+                view_list()
+            elif choice==6:
                 print("--Program Terminated--")
                 break
             else:
