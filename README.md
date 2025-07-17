@@ -1,30 +1,30 @@
-Simple Python To-Do List App
+📝 Terminal-Based To-Do List App
+A Python-based terminal application that helps users manage tasks efficiently. This app supports features like task prioritization, due dates, search, edit, and persistent storage — all from the command line.
 
-This is a beginner-level Python console app to manage your personal to-do list.
+🚀 Features
+1️⃣ Add Tasks – Add tasks with a description, due date (optional), and priority (High, Mid, Low).
+2️⃣ View Tasks – View tasks grouped by priority and sorted by due date.
+3️⃣ Mark Tasks – Mark tasks as completed.
+4️⃣ Remove Tasks – Delete a task by its task number.
+5️⃣ Edit Tasks – Modify a task's description, due date, and priority.
+6️⃣ Search Tasks – Search tasks by keyword (case-insensitive, partial match).
+7️⃣ Save & Load – Tasks are automatically saved to a JSON file and reloaded on startup.
 
-✨ Features so far:
+📁 File Structure
 
-✅ Add tasks with:
+todo_app/
+├── tasks.json           # Auto-generated file to store tasks
+└── todo.py              # Main application script
 
-Description
+🛠️ Technologies Used
+Python 3
+JSON for file-based storage
+datetime for due date handling
 
-Optional due date (e.g. 2025-07-20)
+💡 Possible Future Enhancements
 
-Priority level (High, Mid, Low)
+🔎 Filter tasks by date (e.g., show only today's or pending tasks)
 
-✅ View tasks in a list:
+📤 Export tasks to CSV or PDF
 
-Shows whether tasks are completed
-
-Displays due dates (if any)
-
-Displays priority
-
-✅ Mark tasks as complete instead of deleting them
-
-✅ Remove tasks from the list
-
-✅ Sort tasks by due date (earliest first)
-
-✅ Save and load tasks automatically from a JSON file
-
+🖥️ Create GUI version using Tkinter or a Web version using Flask
