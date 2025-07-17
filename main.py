@@ -29,7 +29,7 @@ def addTask():
             due_date=None
     while True:
         pr= ["high", "mid", "low"]
-        priority = input("Choose (High|Mid|Low): ") .strip().lower()
+        priority = input("Choose (High|Mid|Low): ").strip().lower()
         if priority in pr:
             break
         else:
@@ -53,7 +53,9 @@ def removeTask():
         view_list()
         try:
             task_num = int(input("\n Enter task number to remove: "))
-            idx= task_num-1
+            idx_map = get_display_to_actual_index_map()
+            idx = idx_map().get(task_num)
+            # get actual index from displayed number
             if 0<=idx<len(todo_list):
                 removed_task = todo_list.pop(idx)
                 print("\n '",removed_task["description"],"'", " task removed successfully")
@@ -72,8 +74,9 @@ def markTasks():
         try:
             print()
             task_num=int(input("Enter task number to mark: "))
-            idx=task_num-1
-            if 0<=idx<len(todo_list):
+            idx_map = get_display_to_actual_index_map()
+            idx = idx_map.get(task_num)
+            if -1<idx<len(todo_list):
                 todo_list[idx]["completed"]=True
                 saveTasks()
                 print(" \n'",todo_list[idx]["description"],"'", "marked completed successfully")
@@ -89,8 +92,9 @@ def editTasks():
     else:
         view_list()
         try:
-            editTaskNum= int(input("Enter task number to edit"))
-            idx = editTaskNum-1
+            editTaskNum= int(input("Enter task number to edit: "))
+            idx_map = get_display_to_actual_index_map()
+            idx = idx_map().get(editTaskNum)
             if 0<=idx< len(todo_list):
                 nDes = input("Enter new description: ").strip()
                 if nDes != "":
@@ -119,7 +123,44 @@ def editTasks():
                 print("\n Invalid task number")
         except ValueError:
                 print("Invalid arguments")
-    
+
+def searchTasks():
+    keyword = input("Enter task keyword: ").strip().lower()
+    found= False
+    i=1
+    for task in todo_list:
+        if keyword in task["description"].lower():
+            status = "[x]" if task["completed"]==True else "[ ]"
+            print(f"{status} || {i} || {task["description"]} || Due: {task["due"]} || Priority: {task["priority"]}")
+            found = True
+    if not found:
+        print("\n No task found")
+        
+def get_display_to_actual_index_map():
+    task_map = {}  # maps displayed number → actual index in todo_list
+    task_counter = 1
+    priority_levels = ["High", "Mid", "Low"]
+
+    def sort_date(task):
+        if task["due"] is None:
+            return datetime.max
+        try:
+            return datetime.strptime(task["due"], "%Y-%m-%d")
+        except ValueError:
+            return datetime.max
+
+    for priority in priority_levels:
+        group = []
+        for idx, task in enumerate(todo_list):
+            if priority == task["priority"]:
+                group.append((idx, task))  # store (real index, task)
+        group.sort(key=lambda x: sort_date(x[1]))
+        for real_index, _ in group:
+            task_map[task_counter] = real_index
+            task_counter += 1
+
+    return task_map
+
 def view_list():
     if len(todo_list)==0:
         print("\n List is empty")
@@ -127,7 +168,6 @@ def view_list():
     else:
         print("-----To Do List-----")
         priority_levels = ["High", "Mid", "Low"]
-        task_counter=1
         def sort_date(task):
             if task["due"] == None:
                 return datetime.max
@@ -135,6 +175,7 @@ def view_list():
                 return datetime.strptime(task["due"], "%Y-%m-%d")
             except ValueError:
                 return datetime.max
+        task_counter=1
         for priority in priority_levels:
             group=[]
             for task in todo_list:
@@ -161,8 +202,9 @@ def main():
         print("2. Remove Task")
         print("3. Mark Task")
         print("4. Edit Task")
-        print("5. View Task")
-        print("6. Exit ")
+        print("5. Search Task")
+        print("6. View Task")
+        print("7. Exit ")
         print()
         try:
             choice = int(input("Enter your choice: ")) 
@@ -176,13 +218,14 @@ def main():
             elif choice==4:
                 editTasks()
             elif choice==5:
-                view_list()
+                searchTasks()
             elif choice==6:
+                view_list()
+            elif choice==7:
                 print("--Program Terminated--")
                 break
             else:
-                print("Invalid choice! (Enter between range 1-5)")
-       
+                print("Invalid choice! (Enter between range 1-7)")
         except ValueError:
             print("Invalid choice!")
 
